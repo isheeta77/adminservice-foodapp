@@ -98,7 +98,15 @@ public class FoodServiceImpl implements FoodService {
 
         logger.info("Fetching foods by category : {}", category);
 
-        return foodRepository.findByCategoryContainingIgnoreCase(category);
+        List<Food> foods =
+                foodRepository.findByCategoryContainingIgnoreCase(category);
+
+        if (foods.isEmpty()) {
+            throw new FoodNotFoundException(
+                    "No food found with category : " + category);
+        }
+
+        return foods;
     }
 
     @Override
@@ -106,7 +114,15 @@ public class FoodServiceImpl implements FoodService {
 
         logger.info("Fetching foods below price : {}", price);
 
-        return foodRepository.findByPriceLessThan(price);
+        List<Food> foods =
+                foodRepository.findByPriceLessThan(price);
+
+        if (foods.isEmpty()) {
+            throw new FoodNotFoundException(
+                    "No food found below price : " + price);
+        }
+
+        return foods;
     }
 
     @Override
@@ -118,13 +134,23 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public List<Food> getFoodBetweenPrices(Double minPrice,
-                                           Double maxPrice) {
+    public List<Food> getFoodBetweenPrices(
+            Double minPrice,
+            Double maxPrice) {
 
         logger.info("Fetching foods between {} and {}",
                 minPrice, maxPrice);
 
-        return foodRepository.findByPriceBetween(
-                minPrice, maxPrice);
+        List<Food> foods =
+                foodRepository.findByPriceBetween(
+                        minPrice, maxPrice);
+
+        if (foods.isEmpty()) {
+            throw new FoodNotFoundException(
+                    "No food found between prices : "
+                            + minPrice + " and " + maxPrice);
+        }
+
+        return foods;
     }
 }
