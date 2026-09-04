@@ -11,6 +11,7 @@ import com.food.entity.Food;
 import com.food.service.FoodService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("admin")
@@ -21,20 +22,26 @@ public class FoodController {
 
     @Operation(summary = "Add a new food")
     @PostMapping("/add")
-    public ResponseEntity<Food> addFood(@RequestBody Food food) {
+    public ResponseEntity<Food> addFood(
+            @Valid @RequestBody Food food) {
 
         Food savedFood = foodService.addFood(food);
 
-        return new ResponseEntity<>(savedFood, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                savedFood,
+                HttpStatus.CREATED);
     }
 
     @Operation(summary = "Get food by id")
     @GetMapping("/{foodId}")
-    public ResponseEntity<Food> getFoodById(@PathVariable Integer foodId) {
+    public ResponseEntity<Food> getFoodById(
+            @PathVariable Integer foodId) {
 
         Food food = foodService.getFoodById(foodId);
 
-        return new ResponseEntity<>(food, HttpStatus.OK);
+        return new ResponseEntity<>(
+                food,
+                HttpStatus.OK);
     }
 
     @Operation(summary = "Get all foods")
@@ -43,18 +50,23 @@ public class FoodController {
 
         List<Food> foods = foodService.getAllFoods();
 
-        return new ResponseEntity<>(foods, HttpStatus.OK);
+        return new ResponseEntity<>(
+                foods,
+                HttpStatus.OK);
     }
 
     @Operation(summary = "Update food details")
     @PutMapping("/update/{foodId}")
     public ResponseEntity<Food> updateFood(
             @PathVariable Integer foodId,
-            @RequestBody Food food) {
+            @Valid @RequestBody Food food) {
 
-        Food updatedFood = foodService.updateFood(foodId, food);
+        Food updatedFood =
+                foodService.updateFood(foodId, food);
 
-        return new ResponseEntity<>(updatedFood, HttpStatus.OK);
+        return new ResponseEntity<>(
+                updatedFood,
+                HttpStatus.OK);
     }
 
     @Operation(summary = "Delete food by id")
@@ -77,7 +89,9 @@ public class FoodController {
         List<Food> foods =
                 foodService.getFoodByCategory(category);
 
-        return new ResponseEntity<>(foods, HttpStatus.OK);
+        return new ResponseEntity<>(
+                foods,
+                HttpStatus.OK);
     }
 
     @Operation(summary = "Get foods below price")
@@ -88,7 +102,9 @@ public class FoodController {
         List<Food> foods =
                 foodService.getFoodBelowPrice(price);
 
-        return new ResponseEntity<>(foods, HttpStatus.OK);
+        return new ResponseEntity<>(
+                foods,
+                HttpStatus.OK);
     }
 
     @Operation(summary = "Get available foods")
@@ -98,7 +114,9 @@ public class FoodController {
         List<Food> foods =
                 foodService.getAvailableFoods();
 
-        return new ResponseEntity<>(foods, HttpStatus.OK);
+        return new ResponseEntity<>(
+                foods,
+                HttpStatus.OK);
     }
 
     @Operation(summary = "Get foods between two prices")
@@ -108,8 +126,12 @@ public class FoodController {
             @PathVariable Double maxPrice) {
 
         List<Food> foods =
-                foodService.getFoodBetweenPrices(minPrice, maxPrice);
+                foodService.getFoodBetweenPrices(
+                        minPrice,
+                        maxPrice);
 
-        return new ResponseEntity<>(foods, HttpStatus.OK);
+        return new ResponseEntity<>(
+                foods,
+                HttpStatus.OK);
     }
 }
