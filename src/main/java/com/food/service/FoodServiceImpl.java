@@ -2,12 +2,12 @@ package com.food.service;
 
 import java.util.List;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.food.dto.FoodUpdateDto;
 import com.food.entity.Food;
 import com.food.exception.FoodAlreadyExistsException;
 import com.food.exception.FoodNotFoundException;
@@ -60,7 +60,9 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public Food updateFood(Integer foodId, Food food) {
+    public Food updateFood(
+            Integer foodId,
+            FoodUpdateDto dto) {
 
         logger.info("Updating Food with Id : {}", foodId);
 
@@ -70,11 +72,25 @@ public class FoodServiceImpl implements FoodService {
                                 "Food not found with id : "
                                         + foodId));
 
-        existingFood.setFoodName(food.getFoodName());
-        existingFood.setCategory(food.getCategory());
-        existingFood.setPrice(food.getPrice());
-        existingFood.setDescription(food.getDescription());
-        existingFood.setAvailable(food.isAvailable());
+        if (dto.getFoodName() != null) {
+            existingFood.setFoodName(dto.getFoodName());
+        }
+
+        if (dto.getCategory() != null) {
+            existingFood.setCategory(dto.getCategory());
+        }
+
+        if (dto.getPrice() != null) {
+            existingFood.setPrice(dto.getPrice());
+        }
+
+        if (dto.getDescription() != null) {
+            existingFood.setDescription(dto.getDescription());
+        }
+
+        if (dto.getAvailable() != null) {
+            existingFood.setAvailable(dto.getAvailable());
+        }
 
         return foodRepository.save(existingFood);
     }
@@ -138,17 +154,22 @@ public class FoodServiceImpl implements FoodService {
             Double minPrice,
             Double maxPrice) {
 
-        logger.info("Fetching foods between {} and {}",
-                minPrice, maxPrice);
+        logger.info(
+                "Fetching foods between {} and {}",
+                minPrice,
+                maxPrice);
 
         List<Food> foods =
                 foodRepository.findByPriceBetween(
-                        minPrice, maxPrice);
+                        minPrice,
+                        maxPrice);
 
         if (foods.isEmpty()) {
             throw new FoodNotFoundException(
                     "No food found between prices : "
-                            + minPrice + " and " + maxPrice);
+                            + minPrice
+                            + " and "
+                            + maxPrice);
         }
 
         return foods;

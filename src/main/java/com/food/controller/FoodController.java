@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.food.dto.FoodUpdateDto;
 import com.food.entity.Food;
 import com.food.service.FoodService;
 
@@ -56,19 +57,19 @@ public class FoodController {
     }
 
     @Operation(summary = "Update food details")
-    @PutMapping("/update/{foodId}")
+    @PatchMapping("/update/{foodId}")
     public ResponseEntity<Food> updateFood(
             @PathVariable Integer foodId,
-            @Valid @RequestBody Food food) {
+            @RequestBody FoodUpdateDto dto) {
 
         Food updatedFood =
-                foodService.updateFood(foodId, food);
+                foodService.updateFood(foodId, dto);
 
         return new ResponseEntity<>(
                 updatedFood,
                 HttpStatus.OK);
     }
-
+    
     @Operation(summary = "Delete food by id")
     @DeleteMapping("/delete/{foodId}")
     public ResponseEntity<String> deleteFood(

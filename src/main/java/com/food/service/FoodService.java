@@ -1,6 +1,7 @@
 package com.food.service;
 
 import java.util.List;
+import com.food.dto.FoodUpdateDto;
 
 import com.food.entity.Food;
 
@@ -12,7 +13,7 @@ public interface FoodService {
 
     List<Food> getAllFoods();
 
-    Food updateFood(Integer foodId, Food food);
+    Food updateFood(Integer foodId, FoodUpdateDto dto);
 
     void deleteFood(Integer foodId);
     
